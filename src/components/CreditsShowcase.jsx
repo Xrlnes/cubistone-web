@@ -1,110 +1,158 @@
 import React from 'react';
-import coin from '../images/coin.png';
+import { ShoppingCart, Sparkles, Crown, Star, Zap, Shield, Gem, Diamond } from 'lucide-react';
+import kredi1 from '../images/kredi1.png';
+import kredi2 from '../images/kredi2.png';
+import kredi3 from '../images/kredi3.png';
+import kredi4 from '../images/kredi4.png';
+import kredi5 from '../images/kredi5.png';
 
-const CreditsShowcase = () => {
-  return (
-    <div className="bg-gray-950 py-24">
-      <div className="max-w-7xl mx-auto px-4">
-        {/* Header Section */}
-        <div className="text-center mb-16">
-          <span className="text-blue-500 font-semibold tracking-wider">CREDITS SYSTEM</span>
-          <h2 className="text-5xl font-bold text-white mt-4 leading-tight">
-            Enhance Your Gaming
-            <span className="block text-blue-400 mt-2">With Premium Credits</span>
-          </h2>
+const StoreShowcase = () => {
+  const packages = [
+    { coins: 250, price: 59.99, icon: Shield, image: kredi1, color: 'from-blue-500 to-purple-500', tag: 'STARTER' },
+    { coins: 600, price: 129.99, icon: Star, image: kredi2, color: 'from-green-500 to-teal-500', tag: 'BASIC' },
+    { coins: 1200, price: 224.99, icon: Zap, image: kredi3, color: 'from-yellow-500 to-orange-500', tag: 'PLUS' },
+    { coins: 2800, price: 499.99, icon: Gem, image: kredi3, color: 'from-pink-500 to-rose-500', tag: 'PREMIUM' },
+    { coins: 5200, price: 799.99, icon: Crown, image: kredi4, color: 'from-indigo-500 to-blue-500', tag: 'PRO', bonus: 8 },
+    { coins: 7000, price: 999.99, icon: Diamond, image: kredi4, color: 'from-purple-500 to-pink-500', tag: 'ELITE', bonus: 14 },
+    { coins: 11000, price: 1459.99, icon: Sparkles, image: kredi5, color: 'from-red-500 to-orange-500', tag: 'ULTIMATE', bonus: 18 }
+  ];
+
+  const MiniPackageCard = ({ pack }) => {
+    const Icon = pack.icon;
+    return (
+      <div className="bg-gray-800/50 p-6 rounded-lg group hover:bg-gray-800 transition-all duration-300 relative overflow-hidden">
+        <div className={`absolute inset-0 bg-gradient-to-br ${pack.color} opacity-0 group-hover:opacity-10 transition-opacity`} />
+        <div className="absolute top-0 left-0 w-full h-1/2 bg-white/5 transform -skew-y-12" />
+        <div className={`absolute top-2 right-2 px-2 py-0.5 rounded-full text-[10px] font-bold bg-gradient-to-r ${pack.color} transform translate-x-full group-hover:translate-x-0 transition-transform duration-300`}>
+          {pack.tag}
         </div>
-
-        {/* Main Showcase */}
-        <div className="relative mb-16">
-          {/* Background Effects */}
-          <div className="absolute -top-20 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-          <div className="absolute -bottom-20 right-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl" />
-          
-          {/* Showcase Container */}
-          <div className="relative bg-gray-900/50 p-2 rounded-2xl backdrop-blur-sm border border-gray-800">
-            <div className="relative aspect-video rounded-xl overflow-hidden">
-              <img 
-                src={coin} 
-                alt="Credits Store Preview" 
-                className="w-full h-full object-cover brightness-90 hover:brightness-100 transition duration-300"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent" />
-            </div>
-          </div>
-        </div>
-
-        {/* Features Section */}
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="text-gray-400 text-lg leading-relaxed mb-8">
-            Purchase credits to unlock exclusive features and enhance your gaming experience. 
-            Get access to premium content and special perks.
-          </p>
-
-          {/* Features Grid */}
-          <div className="grid grid-cols-3 gap-8 mb-12">
-            <div className="space-y-3">
-              <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center mx-auto">
-                <svg className="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <div className="text-gray-300 font-medium">Instant Delivery</div>
-            </div>
-
-            <div className="space-y-3">
-              <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center mx-auto">
-                <svg className="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-              </div>
-              <div className="text-gray-300 font-medium">Secure Payments</div>
-            </div>
-
-            <div className="space-y-3">
-              <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center mx-auto">
-                <svg className="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-              </div>
-              <div className="text-gray-300 font-medium">24/7 Support</div>
-            </div>
-          </div>
-
-          <button className="relative overflow-hidden group bg-gradient-to-br from-blue-600 to-blue-700 text-white px-10 py-4 rounded-xl hover:shadow-[0_0_30px_-5px] hover:shadow-blue-500/50 transition-all duration-300 font-semibold text-lg">
-        {/* Background Layers */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
         
-        {/* Shine Effect */}
-        <div className="absolute top-0 -left-full w-1/2 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12 transform group-hover:left-full transition-all duration-700 ease-out" />
-        
-        {/* Multiple Border Effects */}
-        <div className="absolute inset-0 border border-blue-400 rounded-xl opacity-0 group-hover:opacity-50 scale-105 group-hover:scale-110 transition-all duration-300" />
-        <div className="absolute inset-0 border-2 border-white/20 rounded-xl opacity-0 group-hover:opacity-20 scale-100 group-hover:scale-105 transition-all duration-500" />
-        
-        {/* Inner Glow */}
-        <div className="absolute inset-0 bg-blue-600 rounded-xl opacity-0 group-hover:opacity-20 group-hover:blur-md transition-all duration-300" />
-        
-        {/* Button Content */}
-        <span className="relative flex items-center justify-center gap-3 z-10">
-        <span className="transform group-hover:-translate-x-1 transition-transform duration-300">Visit Store</span>
-        <svg 
-            className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" 
-            fill="none" 
-            viewBox="0 0 24 24" 
-            stroke="currentColor"
-        >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-        </svg>
-        </span>
-
-        {/* Hover Ring */}
-        <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-blue-600 to-blue-400 opacity-0 group-hover:opacity-30 blur-md transform scale-105 group-hover:scale-110 transition-all duration-500" />
-        </button>
+        <div className="text-center relative z-10">
+          <img 
+            src={pack.image}
+            alt={`${pack.coins} Credits`}
+            className="w-20 h-20 mx-auto mb-4 object-contain opacity-75 group-hover:opacity-100 transform group-hover:scale-110 transition-all"
+          />
+          <h3 className="text-lg font-bold mb-1 text-white">{pack.coins.toLocaleString()}</h3>
+          {pack.bonus && (
+            <p className="text-green-400 text-sm mb-1">+{pack.bonus}% Bonus</p>
+          )}
+          <p className="text-gray-400 text-base">{pack.price} TL</p>
         </div>
       </div>
-    </div>
+    );
+  };
+
+  return (
+    <section className="bg-gray-950 py-40 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(59,130,246,0.1),transparent_70%)]" />
+      
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="text-center mb-4 relative">
+          <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 animate-pulse" />
+          
+          <span className="relative inline-block">
+            <span className="text-blue-500 font-semibold tracking-wider relative z-10">CREDIT PACKAGES</span>
+          </span>
+          
+          <h2 className="text-5xl font-bold text-white mt-4 leading-tight relative">
+            <span className="relative inline-block">
+              Premium Credits
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-xl -z-10" />
+            </span>
+          </h2>
+          
+          <p className="text-gray-400 mt-4 max-w-2xl mx-auto">
+            Unlock premium features and enhance your experience with our credit packages
+          </p>
+        </div>
+
+        <div className="relative">
+          <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-blue-500/10 rounded-3xl blur-2xl animate-pulse" />
+          
+          <div className="bg-black/90 backdrop-blur-xl border border-gray-800/50 rounded-2xl relative overflow-hidden">
+            <div className="absolute inset-0">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5" />
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
+            </div>
+
+            <div className="relative p-8">
+              <div className="space-y-8">
+                <div className="grid grid-cols-4 gap-6">
+                  {packages.slice(0, 4).map((pack, index) => (
+                    <MiniPackageCard key={index} pack={pack} />
+                  ))}
+                </div>
+                <div className="grid grid-cols-3 gap-6">
+                  {packages.slice(4).map((pack, index) => (
+                    <MiniPackageCard key={index + 4} pack={pack} />
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-16 text-center space-y-8 relative">
+                <div className="relative">
+                  <h3 className="text-2xl font-bold text-white mb-2">Why Choose Our Store?</h3>
+                  <p className="text-gray-400 max-w-2xl mx-auto">
+                    Experience seamless transactions, instant delivery, and premium support. Our store offers competitive prices and regular bonuses for our valued customers.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-3 gap-8 max-w-3xl mx-auto">
+                  <div className="p-4">
+                    <ShoppingCart className="w-8 h-8 text-blue-500 mx-auto mb-2" />
+                    <h4 className="text-lg font-semibold text-white mb-1">Instant Delivery</h4>
+                    <p className="text-sm text-gray-400">Credits are added to your account immediately after purchase</p>
+                  </div>
+                  <div className="p-4">
+                    <Shield className="w-8 h-8 text-blue-500 mx-auto mb-2" />
+                    <h4 className="text-lg font-semibold text-white mb-1">Secure Payments</h4>
+                    <p className="text-sm text-gray-400">Your transactions are protected by industry-leading security</p>
+                  </div>
+                  <div className="p-4">
+                    <Star className="w-8 h-8 text-blue-500 mx-auto mb-2" />
+                    <h4 className="text-lg font-semibold text-white mb-1">24/7 Support</h4>
+                    <p className="text-sm text-gray-400">Our dedicated team is here to help you anytime</p>
+                  </div>
+                </div>
+
+                <button className="group relative overflow-hidden mt-8">
+                  <div className="relative bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition-all duration-300">
+                    <span className="relative z-10 flex items-center justify-center gap-2">
+                      <ShoppingCart className="w-4 h-4" />
+                      Visit Full Store
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 opacity-0 group-hover:opacity-20 transition-all duration-300" />
+                    <div className="absolute top-0 left-0 w-2/5 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-[500%] transition-all duration-1000" />
+                  </div>
+                  <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg opacity-30 group-hover:opacity-50 blur transition-all duration-300 -z-10" />
+                  <div className="absolute -inset-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg opacity-20 group-hover:opacity-40 blur-lg transition-all duration-300 -z-10" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+
+        @keyframes glow {
+          0%, 100% { opacity: 0.5; }
+          50% { opacity: 0.8; }
+        }
+
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+      `}</style>
+    </section>
   );
 };
 
-export default CreditsShowcase;
+export default StoreShowcase;
