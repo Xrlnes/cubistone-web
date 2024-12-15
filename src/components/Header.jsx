@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -13,6 +14,27 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const scrollToTitles = () => {
+    const titlesSection = document.getElementById('titles');
+    if (titlesSection) {
+      titlesSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleNavClick = (item) => {
+    if (item === 'Home') {
+      window.location.href = '/';
+    } else if (item === 'About') {
+      if (window.location.pathname === '/') {
+        scrollToTitles();
+      } else {
+        window.location.href = '/#titles';
+      }
+    } else if (item === 'Support' || item === 'Community') {
+      window.open('https://discord.gg/q376MgFRK7', '_blank');
+    }
+  };
+
   return (
     <header className={`fixed w-full z-50 transition-all duration-300 ${
       scrolled ? 'bg-[#1a237e]/95 backdrop-blur-sm py-4' : 'bg-transparent py-6'
@@ -20,31 +42,47 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <a href="/" className="text-3xl font-bold text-white hover:scale-105 transition-transform">
+          <Link to="/" className="text-3xl font-bold text-white hover:scale-105 transition-transform">
             CubiStone
-          </a>
+          </Link>
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-12">
-            {['Features', 'About', 'Community', 'Support'].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="text-gray-300 hover:text-white text-lg font-medium 
-                         transition-all duration-300 relative group"
-              >
-                {item}
-                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-white 
-                               transition-all duration-300 group-hover:w-full"></span>
-              </a>
+            {['Home', 'About', 'Credits', 'Support', 'Community'].map((item) => (
+              item === 'Credits' ? (
+                <Link
+                  key={item}
+                  to="/credits"
+                  className="text-gray-300 hover:text-white text-lg font-medium 
+                           transition-all duration-300 relative group"
+                >
+                  {item}
+                  <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-white 
+                                 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
+              ) : (
+                <button
+                  key={item}
+                  onClick={() => handleNavClick(item)}
+                  className="text-gray-300 hover:text-white text-lg font-medium 
+                           transition-all duration-300 relative group"
+                >
+                  {item}
+                  <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-white 
+                                 transition-all duration-300 group-hover:w-full"></span>
+                </button>
+              )
             ))}
           </nav>
 
-          {/* CTA Buttons */}
+          {/* CTA Button */}
           <div className="flex items-center space-x-4">
-            <button className="bg-white/10 border border-white/20 text-white 
+            <button 
+              onClick={() => navigator.clipboard.writeText('PLAY.CUBISTONE.COM')}
+              className="bg-white/10 border border-white/20 text-white 
                              hover:bg-white/20 px-6 py-2 rounded-lg transition-all 
-                             duration-300 text-lg backdrop-blur-sm">
+                             duration-300 text-lg backdrop-blur-sm"
+            >
               PLAY.CUBISTONE.COM
             </button>
           </div>

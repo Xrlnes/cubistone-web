@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="relative bg-gradient-to-b from-gray-950 via-[#1a237e] to-[#1a237e] text-white overflow-hidden pt-60 pb-20">
+    <footer className="relative bg-gradient-to-b from-gray-950 via-[#1a237e] to-[#1a237e] text-white overflow-hidden pt-80 pb-20">
       {/* Animated Orbital Lines */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-[800px] h-[800px] left-1/2 -translate-x-1/2 rounded-full border border-blue-500/20 animate-slow-spin"></div>

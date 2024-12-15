@@ -1,10 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import beeImage from '../images/bee.png';
 import dolphinImage from '../images/dolphin.png'
 
 const Titles = () => {
+  const navigate = useNavigate();
+  const [showCopied1, setShowCopied1] = useState(false);
+  const [showCopied2, setShowCopied2] = useState(false);
+
+  const handleCopy = async (setShowCopied) => {
+    try {
+      await navigator.clipboard.writeText('PLAY.CUBISTONE.COM');
+      setShowCopied(true);
+      setTimeout(() => setShowCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  };
+
+  const scrollToNews = () => {
+    const newsSection = document.getElementById('news');
+    if (newsSection) {
+      newsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <>
+    <div id="titles">
       {/* First Section */}
       <div className="bg-gray-950 py-24 relative overflow-hidden">
         <div className="absolute right-0 top-1/2 transform -translate-y-1/2 h-[500px] w-[45%] bg-yellow-300 overflow-hidden"
@@ -23,7 +45,7 @@ const Titles = () => {
               animationDuration: "3s",
               animationTimingFunction: "linear",
               animationIterationCount: "infinite",
-              transform: "skew(10deg)" // Parent'in skew'ini düzeltmek için ters skew
+              transform: "skew(10deg)"
             }}
           />
           <div className="absolute inset-0 opacity-20"
@@ -49,10 +71,21 @@ const Titles = () => {
                 and dedicated support - experience the difference today.
               </p>
               <div className="flex gap-8 mt-12 justify-center">
-                <button className="bg-[#1a237e] text-white px-12 py-4 rounded-lg hover:bg-blue-900 transition-all duration-300 font-bold text-lg transform hover:scale-105">
+                <button 
+                  onClick={() => handleCopy(setShowCopied1)}
+                  className="relative bg-[#1a237e] text-white px-12 py-4 rounded-lg hover:bg-blue-900 transition-all duration-300 font-bold text-lg transform hover:scale-105"
+                >
                   PLAY NOW
+                  {showCopied1 && (
+                    <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-3 py-1 rounded text-sm whitespace-nowrap">
+                      IP Copied!
+                    </div>
+                  )}
                 </button>
-                <button className="bg-red-600 text-white px-12 py-4 rounded-lg hover:bg-red-700 transition-all duration-300 font-bold text-lg transform hover:scale-105">
+                <button 
+                  onClick={() => navigate('/credits')}
+                  className="bg-red-600 text-white px-12 py-4 rounded-lg hover:bg-red-700 transition-all duration-300 font-bold text-lg transform hover:scale-105"
+                >
                   VISIT STORE
                 </button>
               </div>
@@ -114,10 +147,21 @@ const Titles = () => {
                 and enjoy premium content designed just for you.
               </p>
               <div className="flex gap-8 mt-12 justify-center">
-                <button className="bg-blue-600 text-white px-12 py-4 rounded-lg hover:bg-blue-700 transition-all duration-300 font-bold text-lg transform hover:scale-105">
+                <button 
+                  onClick={() => handleCopy(setShowCopied2)}
+                  className="relative bg-blue-600 text-white px-12 py-4 rounded-lg hover:bg-blue-700 transition-all duration-300 font-bold text-lg transform hover:scale-105"
+                >
                   GET STARTED
+                  {showCopied2 && (
+                    <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-3 py-1 rounded text-sm whitespace-nowrap">
+                      IP Copied!
+                    </div>
+                  )}
                 </button>
-                <button className="bg-[#232033] text-white px-12 py-4 rounded-lg hover:bg-gray-800 transition-all duration-300 font-bold text-lg transform hover:scale-105">
+                <button 
+                  onClick={scrollToNews}
+                  className="bg-[#232033] text-white px-12 py-4 rounded-lg hover:bg-gray-800 transition-all duration-300 font-bold text-lg transform hover:scale-105"
+                >
                   LEARN MORE
                 </button>
               </div>
@@ -136,7 +180,7 @@ const Titles = () => {
           }
         }
       `}</style>
-    </>
+    </div>
   );
 };
 

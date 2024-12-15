@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const Hero = () => {
+  const [showCopied, setShowCopied] = useState(false);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText('PLAY.CUBISTONE.COM');
+      setShowCopied(true);
+      setTimeout(() => setShowCopied(false), 2000); // 2 saniye sonra bildirimi kaldır
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  };
+
   return (
     <div className="relative overflow-hidden bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950">
-      {/* Background Elements */}
+      {/* Background Elements - aynı */}
       <div className="absolute inset-0 opacity-20"
         style={{
           backgroundImage: `repeating-linear-gradient(0deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 35px),
@@ -13,8 +25,26 @@ const Hero = () => {
         }}
       />
 
+      {/* Animated Particles - aynı */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute bg-blue-500/5 backdrop-blur-sm rounded"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              width: `${Math.random() * 40 + 20}px`,
+              height: `${Math.random() * 40 + 20}px`,
+              animation: `float ${Math.random() * 10 + 5}s linear infinite`,
+              animationDelay: `${Math.random() * 5}s`,
+            }}
+          />
+        ))}
+      </div>
+
       {/* Main Content */}
-      <div className="relative min-h-screen flex flex-col items-center justify-center px-4 text-center -mt-20">
+      <div className="relative min-h-screen flex flex-col items-center justify-center px-4 text-center -mt-20" style={{ zIndex: 10 }}>
         <div className="space-y-4">
           <span className="text-blue-400 font-light text-xl tracking-widest uppercase block">
             Welcome to Our Universe
@@ -39,31 +69,21 @@ const Hero = () => {
         </p>
         
         <div className="mt-12 flex gap-6">
-          <button className="bg-blue-500/10 backdrop-blur-sm border border-blue-500/20 text-white px-10 py-4 rounded-lg hover:bg-blue-500/20 transition-all duration-300 font-medium text-lg">
+          <button 
+            onClick={handleCopy}
+            className="relative bg-blue-500/10 backdrop-blur-sm border border-blue-500/20 text-white px-10 py-4 rounded-lg hover:bg-blue-500/20 transition-all duration-300 font-medium text-lg group"
+          >
             Start Building
+            {showCopied && (
+              <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-3 py-1 rounded text-sm whitespace-nowrap">
+                IP Copied!
+              </div>
+            )}
           </button>
           <button className="bg-blue-600 text-white px-10 py-4 rounded-lg hover:bg-blue-700 transition-all duration-300 font-medium text-lg">
             Learn More
           </button>
         </div>
-      </div>
-
-      {/* Animated Particles */}
-      <div className="absolute inset-0 pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute bg-blue-500/5 backdrop-blur-sm rounded"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              width: `${Math.random() * 40 + 20}px`,
-              height: `${Math.random() * 40 + 20}px`,
-              animation: `float ${Math.random() * 10 + 5}s linear infinite`,
-              animationDelay: `${Math.random() * 5}s`,
-            }}
-          />
-        ))}
       </div>
 
       <style jsx>{`

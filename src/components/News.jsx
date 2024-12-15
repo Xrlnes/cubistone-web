@@ -73,77 +73,77 @@ const NewsModal = ({ news, onClose }) => (
 );
 
 const News = () => {
-    const [selectedNews, setSelectedNews] = useState(null);
-  
-    const newsData = [
-      {
-        image: winter,
-        title: "Special Announcements Coming Soon!",
-        author: "CubiStone Team",
-        date: "1 March 2024",
-        description: "We're thrilled to announce that something extraordinary is on the horizon! Our team has been working tirelessly behind the scenes to bring you an amazing update that will transform your gaming experience. Stay tuned for more details about exciting new features, special events, and unique rewards that await our community. This update represents our biggest step forward yet, and we can't wait to share it with all of you. Get ready for an adventure like never before!"
-      }
-    ];
-  
-    return (
-      <section className="bg-gray-950 py-48 relative overflow-hidden">
-        {/* Content Container */}
-        <div className="max-w-7xl mx-auto px-4 relative">
-          {/* Header Section */}
-          <div className="relative text-center mb-20">
-            {/* Glowing Orbs */}
-            <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 w-32 h-32 bg-blue-200 rounded-full blur-3xl opacity-60" />
-            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-24 h-24 bg-blue-300 rounded-full blur-2xl opacity-50" />
+  const [selectedNews, setSelectedNews] = useState(null);
+
+  const newsData = [
+    {
+      image: winter,
+      title: "Special Announcements Coming Soon!",
+      author: "CubiStone Team",
+      date: "1 March 2024",
+      description: "We're thrilled to announce that something extraordinary is on the horizon! Our team has been working tirelessly behind the scenes to bring you an amazing update that will transform your gaming experience. Stay tuned for more details about exciting new features, special events, and unique rewards that await our community. This update represents our biggest step forward yet, and we can't wait to share it with all of you. Get ready for an adventure like never before!"
+    }
+  ];
+
+  return (
+    <section id="news" className="bg-gray-950 py-48 relative overflow-hidden">
+      {/* Content Container */}
+      <div className="max-w-7xl mx-auto px-4 relative">
+        {/* Header Section */}
+        <div className="relative text-center mb-20">
+          {/* Glowing Orbs */}
+          <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 w-32 h-32 bg-blue-200 rounded-full blur-3xl opacity-60" />
+          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-24 h-24 bg-blue-300 rounded-full blur-2xl opacity-50" />
+          
+          <div className="relative z-10">
+            <span className="inline-block px-6 py-2 bg-blue-600 rounded-full text-white font-semibold text-lg mb-8 shadow-lg transform transition-transform hover:scale-105">
+              Stay Informed
+            </span>
             
-            <div className="relative z-10">
-              <span className="inline-block px-6 py-2 bg-blue-600 rounded-full text-white font-semibold text-lg mb-8 shadow-lg transform transition-transform hover:scale-105">
-                Stay Informed
-              </span>
-              
-              <div className="relative mb-8">
-                <h2 className="text-[120px] font-black text-gray-600 leading-none select-none absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  NEWS
-                </h2>
-                <h2 className="relative text-5xl font-bold text-gray-200">
-                  Latest <span className="text-blue-400">Updates</span>
-                </h2>
-              </div>
-              
-              <p className="text-gray-600 text-lg max-w-xl mx-auto leading-relaxed">
-                Keep up with our latest announcements and discover what's new in our world
-              </p>
+            <div className="relative mb-8">
+              <h2 className="text-[120px] font-black text-gray-600 leading-none select-none absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                NEWS
+              </h2>
+              <h2 className="relative text-5xl font-bold text-gray-200">
+                Latest <span className="text-blue-400">Updates</span>
+              </h2>
             </div>
             
-            {/* Bottom Line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 -bottom-8 w-24 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
+            <p className="text-gray-600 text-lg max-w-xl mx-auto leading-relaxed">
+              Keep up with our latest announcements and discover what's new in our world
+            </p>
           </div>
-  
-          {/* News Card Container */}
-          <div className="max-w-2xl mx-auto relative">
-            {newsData.map((news, index) => (
-              <NewsCard
-                key={index}
-                {...news}
-                onClick={() => setSelectedNews(news)}
-              />
-            ))}
-  
-            {/* Bottom Glowing Line */}
-            <div className="relative mt-20">
-              <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-full h-10 bg-blue-500/20 blur-2xl opacity-60" />
-              <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 w-3/4 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
-            </div>
+          
+          {/* Bottom Line */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 -bottom-8 w-24 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
+        </div>
+
+        {/* News Card Container */}
+        <div className="max-w-2xl mx-auto relative">
+          {newsData.map((news, index) => (
+            <NewsCard
+              key={index}
+              {...news}
+              onClick={() => setSelectedNews(news)}
+            />
+          ))}
+
+          {/* Bottom Glowing Line */}
+          <div className="relative mt-20">
+            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-full h-10 bg-blue-500/20 blur-2xl opacity-60" />
+            <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 w-3/4 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
           </div>
         </div>
-  
-        {selectedNews && (
-          <NewsModal
-            news={selectedNews}
-            onClose={() => setSelectedNews(null)}
-          />
-        )}
-      </section>
-    );
-  };
-  
-  export default News;
+      </div>
+
+      {selectedNews && (
+        <NewsModal
+          news={selectedNews}
+          onClose={() => setSelectedNews(null)}
+        />
+      )}
+    </section>
+  );
+};
+
+export default News;
