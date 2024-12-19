@@ -1,6 +1,5 @@
-// CreditPage.jsx
-import React, { useState, useEffect } from 'react';
-import { ShoppingCart, Shield, LogIn } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ShoppingCart, Shield } from 'lucide-react';
 import axios from 'axios';
 
 const BASE_URL = 'https://headless.tebex.io/api';
@@ -9,94 +8,65 @@ const WEBSTORE_TOKEN = 'wjgx-c3e5f86bc18304945901aaada4c75b0b8076a349';
 
 const api = axios.create({
   baseURL: BASE_URL,
+  auth: {
+    username: 1518225,
+    password: 'e0D1Uph2SipunszEoMPtRUmFReZnqsQ1'
+  },
   headers: {
     'Content-Type': 'application/json',
-    'X-Tebex-Secret': API_KEY,
-  },
+  }
 });
 
 const StoreAPI = {
-  async createPayment(packageId, username) {
-    try {
-      const response = await fetch('/api/payments/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          package_id: packageId,
-          username: username,
-        })
-      });
+  cart: [], 
 
-      if (!response.ok) {
-        throw new Error('Payment creation failed');
-      }
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Payment creation error:', error);
-      throw error;
+  async addToCart(packageData, username) {
+    if (!username) {
+      throw new Error('Username is required for Minecraft store');
     }
+
+    this.cart = this.getCart();
+    
+    this.cart.push({
+      id: packageData.id,
+      name: packageData.name,
+      price: packageData.price,
+      username: username
+    });
+
+    localStorage.setItem('cart', JSON.stringify(this.cart));
+
+    return {
+      success: true,
+      message: `${packageData.name} sepete eklendi`
+    };
+  },
+
+  removeFromCart(index) {
+    // Load current cart from localStorage
+    this.cart = this.getCart();
+    // Remove item at specified index
+    this.cart.splice(index, 1);
+    // Update localStorage
+    localStorage.setItem('cart', JSON.stringify(this.cart));
+    return {
+      success: true,
+      message: "Item removed from cart"
+    };
+  },
+
+  getCart() {
+    const cart = localStorage.getItem('cart');
+    return cart ? JSON.parse(cart) : [];
+  },
+
+  clearCart() {
+    this.cart = [];
+    localStorage.removeItem('cart');
   }
 };
 
-// StoreBar Component remains the same
-const StoreBar = ({ username, isLoggedIn, onLogin }) => {
-  const [isLoginOpen, setLoginOpen] = useState(false);
-
-  return (
-    <>
-      <div className="bg-gray-950/50 backdrop-blur-md py-4 mt-20">
-        <div className="container mx-auto px-4">
-          <div className="bg-gradient-to-r from-[#1a237e] to-blue-900 rounded-xl p-6 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-20" />
-            <div className="absolute inset-0 opacity-20" style={{
-              backgroundImage: `radial-gradient(circle at 2px 2px, rgba(255,255,255,0.1) 1px, transparent 0)`,
-              backgroundSize: '20px 20px'
-            }} />
-            
-            <div className="relative flex justify-between items-center">
-              <div className="flex items-center gap-4">
-                <div className="bg-blue-500/20 p-2 rounded-lg">
-                  <ShoppingCart className="w-6 h-6 text-blue-300" />
-                </div>
-                <span className="font-extrabold text-2xl tracking-wide text-white">
-                  CREDIT STORE
-                </span>
-              </div>
-              
-              <div className="flex items-center gap-4">
-                {isLoggedIn ? (
-                  <div className="text-white">
-                    Welcome, <span className="font-semibold">{username}</span>
-                  </div>
-                ) : (
-                  <button 
-                    onClick={() => setLoginOpen(true)}
-                    className="flex items-center gap-2 bg-blue-500/20 hover:bg-blue-500/30 text-white px-6 py-2.5 rounded-lg transition-all duration-300 group"
-                  >
-                    <LogIn className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                    <span className="font-semibold">Login with Username</span>
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <LoginModal 
-        isOpen={isLoginOpen}
-        onClose={() => setLoginOpen(false)}
-        onLogin={onLogin}
-      />
-    </>
-  );
-};
-
-// LoginModal Component remains the same
+// LoginModal Component
 const LoginModal = ({ isOpen, onClose, onLogin }) => {
   const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(false);
@@ -155,32 +125,188 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
   );
 };
 
+// StoreBar Component
+const StoreBar = ({ username, isLoggedIn, cartItems, onUpdateCart }) => {
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+
+  const calculateTotal = () => {
+    return cartItems.reduce((total, item) => {
+      const price = Number(item.price || item.base_price || 0);
+      return total + price;
+    }, 0);
+  };
+
+  const handleRemoveFromCart = (indexToRemove) => {
+    StoreAPI.removeFromCart(indexToRemove);
+    onUpdateCart();
+  };
+
+  const handleCheckout = async () => {
+    if (!isLoggedIn || !username) {
+      alert('Please login with your Minecraft username first');
+      return;
+    }
+
+    setIsCheckingOut(true);
+    try {
+      console.log('Starting checkout process...');
+      console.log('Cart items:', cartItems);
+
+      // 1. Create basket without IP (let Tebex handle it)
+      const checkoutResponse = await api.post(`/accounts/${WEBSTORE_TOKEN}/baskets`, {
+        username: username,
+        complete_url: window.location.origin,
+        cancel_url: window.location.origin,
+        complete_auto_redirect: true
+      });
+
+      console.log('Basket created:', checkoutResponse.data);
+
+      if (!checkoutResponse.data?.data?.ident) {
+        throw new Error('Invalid basket response');
+      }
+
+      const basketIdent = checkoutResponse.data.data.ident;
+
+      // 2. Add items to basket
+      for (const item of cartItems) {
+        console.log('Adding item to basket:', item);
+        
+        await api.post(`/baskets/${basketIdent}/packages`, {
+          package_id: item.id,
+          quantity: 1
+        });
+      }
+
+      // 3. Redirect to Tebex checkout
+      const checkoutUrl = `https://checkout.tebex.io/checkout/${basketIdent}`;
+      window.open(checkoutUrl, '_blank', 'noopener,noreferrer');
+
+      // Clear cart after successful checkout initiation
+      StoreAPI.clearCart();
+      onUpdateCart();
+
+    } catch (error) {
+      console.error('Checkout error:', error);
+      console.error('Error response:', error.response?.data);
+      
+      let errorMessage = 'An error occurred during checkout. Please try again.';
+      
+      if (error.response?.data?.error) {
+        errorMessage = error.response.data.error;
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.response?.data?.title) {
+        errorMessage = error.response.data.title;
+      }
+      
+      alert(errorMessage);
+    } finally {
+      setIsCheckingOut(false);
+    }
+  };
+
+  return (
+    <div className="bg-gray-950/50 backdrop-blur-md py-4 mt-20">
+      <div className="container mx-auto px-4">
+        <div className="mt-4 bg-gray-900 rounded-xl p-6">
+          <h2 className="text-2xl font-bold text-white mb-4">Your Cart</h2>
+          
+          {cartItems.length === 0 ? (
+            <p className="text-gray-400">Your cart is empty</p>
+          ) : (
+            <>
+              <div className="overflow-y-auto max-h-60">
+                {cartItems.map((item, index) => (
+                  <div 
+                    key={index} 
+                    className="flex justify-between mb-2 text-white items-center"
+                  >
+                    <div className="flex gap-2 items-center">
+                      <span>{item.name}</span>
+                      <span className="text-xs text-gray-400">({item.username})</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span>${item.price}</span>
+                      <button 
+                        onClick={() => handleRemoveFromCart(index)}
+                        className="text-red-500 hover:text-red-600"
+                      >
+                        <svg 
+                          xmlns="http://www.w3.org/2000/svg" 
+                          className="h-5 w-5" 
+                          viewBox="0 0 20 20" 
+                          fill="currentColor"
+                        >
+                          <path 
+                            fillRule="evenodd" 
+                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" 
+                            clipRule="evenodd" 
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-4 pt-2 border-t border-gray-700">
+                <div className="flex justify-between text-white font-bold">
+                  <span>Total</span>
+                  <span>${calculateTotal()}</span>
+                </div>
+              </div>
+
+              <button 
+                onClick={handleCheckout}
+                disabled={isCheckingOut}
+                className="w-full mt-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {isCheckingOut ? (
+                  <>
+                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Processing...
+                  </>
+                ) : (
+                  'Proceed to Checkout'
+                )}
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // PackageCard Component
 const getGradient = (packName) => {
   switch(packName.toLowerCase()) {
     case 'starter':
-      return 'from-blue-600 to-blue-800'; // Mavi Gradyant
+      return 'from-blue-600 to-blue-800';
     case 'basic':
-      return 'from-green-500 to-green-700'; // Yeşil Gradyant
+      return 'from-green-500 to-green-700';
     case 'plus':
-      return 'from-orange-500 to-orange-700'; // Turuncu Gradyant
+      return 'from-orange-500 to-orange-700';
     case 'premium':
-      return 'from-pink-500 to-orange-500'; // Pembe Turuncu Gradyant
+      return 'from-pink-500 to-orange-500';
     case 'pro':
-      return 'from-blue-600 to-purple-600'; // Mavi Mor Gradyant
+      return 'from-blue-600 to-purple-600';
     case 'elite':
-      return 'from-pink-600 to-purple-600'; // Pembe Mor Gradyant
+      return 'from-pink-600 to-purple-600';
     case 'ultimate':
-      return 'from-red-500 to-orange-500'; // Kırmızı Turuncu Gradyant
+      return 'from-red-500 to-orange-500';
     default:
-      return 'from-blue-600 to-blue-800'; // Default to Starter theme
+      return 'from-blue-600 to-blue-800';
   }
 };
 
 const PackageCard = ({ pack, onPurchase, loading }) => {
   const gradient = getGradient(pack.name);
   
-  // Description'dan <p> etiketlerini kaldır
   const cleanDescription = pack.description.replace(/<\/?p>/g, '');
   
   return (
@@ -193,7 +319,6 @@ const PackageCard = ({ pack, onPurchase, loading }) => {
 
       <Shield className={`w-8 h-8 mb-4 text-white bg-gradient-to-br ${gradient} p-1.5 rounded-lg`} />
 
-      {/* Add image section */}
       <div className="mb-6 flex justify-center">
         <img 
           src={pack.image} 
@@ -213,7 +338,7 @@ const PackageCard = ({ pack, onPurchase, loading }) => {
           className="relative w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white px-6 py-3 rounded-lg transition-all group overflow-hidden mt-4 disabled:opacity-50"
         >
           <span className="relative z-10 font-bold flex items-center justify-between">
-            <span>${Number(pack.price).toFixed(2)}</span>
+            <span>${Number(pack.price)}</span>
             <span className="flex items-center gap-2">
               {loading ? 'Processing...' : 'Purchase Now'}
               <ShoppingCart className="w-4 h-4" />
@@ -234,6 +359,52 @@ const CreditPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [pendingPackage, setPendingPackage] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+
+  const storeBarRef = useRef(null);
+
+  useEffect(() => {
+    setCartItems(StoreAPI.getCart());
+  }, []);
+
+  const updateCart = () => {
+    setCartItems(StoreAPI.getCart());
+  };
+
+  const addToCartWithUsername = async (packageData, username) => {
+    setLoading(true);
+    setError(null);
+  
+    try {
+      const result = await StoreAPI.addToCart(packageData, username);
+      
+      if (result.success) {
+        updateCart();
+        const storeBarElement = document.getElementById('store-bar-section');
+        if (storeBarElement) {
+          storeBarElement.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center',
+            inline: 'nearest'
+          });
+        } else {
+          window.scrollTo({
+            top: document.documentElement.scrollHeight / 4,
+            behavior: 'smooth'
+          });
+        }
+      } else {
+        throw new Error('Failed to add to cart');
+      }
+    } catch (error) {
+      console.error('Cart error:', error);
+      setError('An error occurred while adding to cart. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -248,7 +419,6 @@ const CreditPage = () => {
         setLoading(true);
         const response = await api.get(`/accounts/${WEBSTORE_TOKEN}/packages`);
         if (response.data && response.data.data) {
-          // Filter and transform packages as needed
           const transformedPackages = response.data.data.map(pack => ({
             ...pack,
             price: parseFloat(pack.total_price),
@@ -270,27 +440,23 @@ const CreditPage = () => {
   }, []);
 
   const handlePurchase = async (packageData) => {
-    if (!isLoggedIn || !username) {
-      setError('You must be logged in with a username to make a purchase.');
+    if (!isLoggedIn) {
+      setIsLoginModalOpen(true);
+      setPendingPackage(packageData);
       return;
     }
+  
+    await addToCartWithUsername(packageData, username);
+  };
 
-    setLoading(true);
-    setError(null);
+  const handleLogin = async (enteredUsername) => {
+    setUsername(enteredUsername);
+    setIsLoggedIn(true);
+    setIsLoginModalOpen(false);
 
-    try {
-      const payment = await StoreAPI.createPayment(packageData.id, username);
-      
-      if (payment.url) {
-        window.location.href = payment.url;
-      } else {
-        throw new Error('Payment URL not received');
-      }
-    } catch (error) {
-      console.error('Purchase error:', error);
-      setError('An error occurred while creating the payment. Please try again.');
-    } finally {
-      setLoading(false);
+    if (pendingPackage) {
+      await addToCartWithUsername(pendingPackage, enteredUsername);
+      setPendingPackage(null);
     }
   };
 
@@ -302,16 +468,16 @@ const CreditPage = () => {
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
-
-      <StoreBar 
-        username={username} 
-        isLoggedIn={isLoggedIn}
-        onLogin={(name) => {
-          setUsername(name);
-          setIsLoggedIn(true);
-        }}
-      />
-
+      <div 
+        ref={storeBarRef}
+        id="store-bar-section">
+        <StoreBar 
+          username={username} 
+          isLoggedIn={isLoggedIn}
+          cartItems={cartItems}
+          onUpdateCart={updateCart}
+        />
+      </div>
       {error && (
         <div className="container mx-auto px-4 mt-4">
           <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-lg">
@@ -332,7 +498,6 @@ const CreditPage = () => {
           {loading ? (
             <div className="text-center text-gray-400">Loading packages...</div>
           ) : (
-            console.log(packages),
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {packages.map((pack) => ( 
                 <PackageCard 
@@ -346,6 +511,15 @@ const CreditPage = () => {
           )}
         </div>
       </div>
+
+      <LoginModal 
+        isOpen={isLoginModalOpen} 
+        onClose={() => {
+          setIsLoginModalOpen(false);
+          setPendingPackage(null);
+        }}
+        onLogin={handleLogin} 
+      />
     </div>
   );
 };
