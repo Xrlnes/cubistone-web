@@ -41,7 +41,7 @@ const StoreBar = () => {
                   className="flex items-center gap-2 bg-blue-500/20 hover:bg-blue-500/30 text-white px-6 py-2.5 rounded-lg transition-all duration-300 group"
                 >
                   <LogIn className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                  <span className="font-semibold">Login with Minecraft</span>
+                  <span className="font-semibold">Login with Username</span>
                 </button>
               </div>
             </div>

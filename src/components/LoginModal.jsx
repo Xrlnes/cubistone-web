@@ -1,18 +1,25 @@
 import React, { useState } from 'react';
 
-const LoginModal = ({ isOpen, onClose }) => {
+// Updated LoginModal component with Tebex integration
+const LoginModal = ({ isOpen, onClose, onLogin }) => {
   const [username, setUsername] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic here
-    onClose();
+    if (username.trim()) {
+      onLogin(username.trim());
+      onClose();
+    }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <dialog 
+      id="loginModal"
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      open={isOpen}
+    >
       <div className="bg-gray-900 rounded-xl p-6 w-full max-w-md relative border border-gray-800">
         <button 
           onClick={onClose}
@@ -40,11 +47,11 @@ const LoginModal = ({ isOpen, onClose }) => {
             type="submit"
             className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity"
           >
-            Continue
+            Continue to Purchase
           </button>
         </form>
       </div>
-    </div>
+    </dialog>
   );
 };
 
