@@ -62,13 +62,14 @@ const Titles = () => {
                 Explore The Features
               </span>
               <h2 className="text-[#8e82d1] font-black leading-none mt-4 uppercase tracking-tight text-center">
-                <span className="block text-[80px] mt-2">VARIOUS</span>
-                <span className="block text-[80px] mt-2">MEMBERSHIP</span>
+                <span className="block text-[80px] mt-2">PREMIUM MEMBERSHIP</span>
+                <span className="block text-[80px] mt-2">FEATURES</span>
               </h2>
               <p className="text-gray-300 text-xl mt-8 max-w-2xl leading-relaxed font-light text-center mx-auto">
-                Unlock a world of exclusive features with our premium membership.
-                From priority access to special events, custom content creation,
-                and dedicated support - experience the difference today.
+              Unlock a world of exclusive features with our premium membership.
+              Enjoy priority access to special events, custom content creation,
+              and dedicated support – all designed to give you an elevated experience.
+              Join today and see the difference for yourself!
               </p>
               <div className="flex gap-8 mt-12 justify-center">
                 <button 
@@ -142,9 +143,10 @@ const Titles = () => {
                 <span className="block text-[80px] mt-2">FEATURES</span>
               </h2>
               <p className="text-gray-300 text-xl mt-8 max-w-2xl leading-relaxed font-light text-center mx-auto">
-                Get access to an extensive collection of features.
-                Create unique experiences, join special events,
-                and enjoy premium content designed just for you.
+              Elevate your Skyblock experience with new features and enhancements. 
+              Explore custom islands, unique challenges, faster resource gathering, 
+              and more exciting events. Join our community and immerse yourself 
+              in an adventure like never before!
               </p>
               <div className="flex gap-8 mt-12 justify-center">
                 <button 

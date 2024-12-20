@@ -56,16 +56,13 @@ const Hero = () => {
               <span className="block bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent text-9xl mt-3">
                 World
               </span>
-              <span className="block text-6xl mt-4 text-blue-400/80 font-light">
-                One Block at a Time
-              </span>
             </h1>
           </div>
         </div>
         
         <p className="mt-12 max-w-xl mx-auto text-lg text-gray-400 font-light leading-relaxed">
-          Explore endless possibilities in a universe where creativity knows no bounds.
-          Join us on an adventure of creation and discovery.
+        Take on epic challenges, defeat mighty foes, and earn legendary rewards. 
+        Become the hero you were meant to be. Your adventure starts now!
         </p>
         
         <div className="mt-12 flex gap-6">
