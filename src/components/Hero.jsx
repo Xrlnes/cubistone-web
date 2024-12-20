@@ -7,15 +7,15 @@ const Hero = () => {
     try {
       await navigator.clipboard.writeText('PLAY.CUBISTONE.COM');
       setShowCopied(true);
-      setTimeout(() => setShowCopied(false), 2000); // 2 saniye sonra bildirimi kaldır
+      setTimeout(() => setShowCopied(false), 2000);
     } catch (err) {
       console.error('Failed to copy text: ', err);
     }
   };
 
   return (
-    <div className="relative overflow-hidden bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950">
-      {/* Background Elements - aynı */}
+    <div className="relative overflow-hidden bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 py-64">
+      {/* Background Elements */}
       <div className="absolute inset-0 opacity-20"
         style={{
           backgroundImage: `repeating-linear-gradient(0deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 35px),
@@ -25,7 +25,7 @@ const Hero = () => {
         }}
       />
 
-      {/* Animated Particles - aynı */}
+      {/* Animated Particles */}
       <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
         {[...Array(20)].map((_, i) => (
           <div
@@ -44,7 +44,7 @@ const Hero = () => {
       </div>
 
       {/* Main Content */}
-      <div className="relative min-h-screen flex flex-col items-center justify-center px-4 text-center -mt-20" style={{ zIndex: 10 }}>
+      <div className="relative container mx-auto flex flex-col items-center justify-center px-4 text-center pb-20" style={{ zIndex: 10 }}>
         <div className="space-y-4">
           <span className="text-blue-400 font-light text-xl tracking-widest uppercase block">
             Welcome to Our Universe
@@ -61,8 +61,8 @@ const Hero = () => {
         </div>
         
         <p className="mt-12 max-w-xl mx-auto text-lg text-gray-400 font-light leading-relaxed">
-        Take on epic challenges, defeat mighty foes, and earn legendary rewards. 
-        Become the hero you were meant to be. Your adventure starts now!
+          Take on epic challenges, defeat mighty foes, and earn legendary rewards. 
+          Become the hero you were meant to be. Your adventure starts now!
         </p>
         
         <div className="mt-12 flex gap-6">

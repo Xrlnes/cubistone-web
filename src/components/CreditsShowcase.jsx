@@ -10,13 +10,13 @@ import kredi5 from '../images/kredi5.png';
 const StoreShowcase = () => {
   const navigate = useNavigate();
   const packages = [
-    { coins: 250, price: 59.99, icon: Shield, image: kredi1, color: 'from-blue-500 to-purple-500', tag: 'STARTER' },
-    { coins: 600, price: 129.99, icon: Star, image: kredi2, color: 'from-green-500 to-teal-500', tag: 'BASIC' },
-    { coins: 1200, price: 224.99, icon: Zap, image: kredi3, color: 'from-yellow-500 to-orange-500', tag: 'PLUS' },
-    { coins: 2800, price: 499.99, icon: Gem, image: kredi3, color: 'from-pink-500 to-rose-500', tag: 'PREMIUM' },
-    { coins: 5200, price: 799.99, icon: Crown, image: kredi4, color: 'from-indigo-500 to-blue-500', tag: 'PRO', bonus: 8 },
-    { coins: 7000, price: 999.99, icon: Diamond, image: kredi4, color: 'from-purple-500 to-pink-500', tag: 'ELITE', bonus: 14 },
-    { coins: 11000, price: 1459.99, icon: Sparkles, image: kredi5, color: 'from-red-500 to-orange-500', tag: 'ULTIMATE', bonus: 18 }
+    { coins: 250, price: 4.79, icon: Shield, image: kredi1, color: 'from-blue-500 to-purple-500', tag: 'Starter Pack' },
+    { coins: 550, price: 9.58, icon: Star, image: kredi2, color: 'from-green-500 to-teal-500', tag: 'Basic Pack' },
+    { coins: 1210, price: 19.16, icon: Zap, image: kredi3, color: 'from-yellow-500 to-orange-500', tag: 'Plus Pack' },
+    { coins: 2662, price: 38.32, icon: Gem, image: kredi3, color: 'from-pink-500 to-rose-500', tag: 'Premium Pack' },
+    { coins: 5856, price: 76.64, icon: Crown, image: kredi4, color: 'from-indigo-500 to-blue-500', tag: 'Pro Pack' },
+    { coins: 12884, price: 153.28, icon: Diamond, image: kredi4, color: 'from-purple-500 to-pink-500', tag: 'Elite Pack' },
+    { coins: 28345, price: 306.56, icon: Sparkles, image: kredi5, color: 'from-red-500 to-orange-500', tag: 'Ultimate Pack' }
   ];
 
   const handleStoreClick = () => {
@@ -36,14 +36,11 @@ const StoreShowcase = () => {
         <div className="text-center relative z-10">
           <img 
             src={pack.image}
-            alt={`${pack.coins} Credits`}
+            alt={`${pack.coins} Cubistone Golds`}
             className="w-20 h-20 mx-auto mb-4 object-contain opacity-75 group-hover:opacity-100 transform group-hover:scale-110 transition-all"
           />
-          <h3 className="text-lg font-bold mb-1 text-white">{pack.coins.toLocaleString()}</h3>
-          {pack.bonus && (
-            <p className="text-green-400 text-sm mb-1">+{pack.bonus}% Bonus</p>
-          )}
-          <p className="text-gray-400 text-base">{pack.price} TL</p>
+          <h3 className="text-lg font-bold mb-1 text-white">{pack.coins.toLocaleString()} CUBISTONE GOLDS</h3>
+          <p className="text-gray-400 text-base">${pack.price}</p>
         </div>
       </div>
     );
@@ -58,18 +55,18 @@ const StoreShowcase = () => {
           <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 animate-pulse" />
           
           <span className="relative inline-block">
-            <span className="text-blue-500 font-semibold tracking-wider relative z-10">CREDIT PACKAGES</span>
+            <span className="text-blue-500 font-semibold tracking-wider relative z-10">CUBISTONE GOLD PACKAGES</span>
           </span>
           
           <h2 className="text-5xl font-bold text-white mt-4 leading-tight relative">
             <span className="relative inline-block">
-              Premium Credits
+              Cubistone Golds
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-xl -z-10" />
             </span>
           </h2>
           
           <p className="text-gray-400 mt-4 max-w-2xl mx-auto">
-            Unlock premium features and enhance your experience with our credit packages
+            Unlock premium features and enhance your experience with our Cubistone Gold packages
           </p>
         </div>
 
@@ -101,7 +98,7 @@ const StoreShowcase = () => {
                 <div className="relative">
                   <h3 className="text-2xl font-bold text-white mb-2">Why Choose Our Store?</h3>
                   <p className="text-gray-400 max-w-2xl mx-auto">
-                    Experience seamless transactions, instant delivery, and premium support. Our store offers competitive prices and regular bonuses for our valued customers.
+                    Experience seamless transactions, instant delivery, and premium support. Our store offers competitive prices for our valued customers.
                   </p>
                 </div>
 
@@ -109,7 +106,7 @@ const StoreShowcase = () => {
                   <div className="p-4">
                     <ShoppingCart className="w-8 h-8 text-blue-500 mx-auto mb-2" />
                     <h4 className="text-lg font-semibold text-white mb-1">Instant Delivery</h4>
-                    <p className="text-sm text-gray-400">Credits are added to your account immediately after purchase</p>
+                    <p className="text-sm text-gray-400">Cubistone Golds are added to your account immediately after purchase</p>
                   </div>
                   <div className="p-4">
                     <Shield className="w-8 h-8 text-blue-500 mx-auto mb-2" />
@@ -124,20 +121,20 @@ const StoreShowcase = () => {
                 </div>
 
                 <button 
-    onClick={handleStoreClick}
-    className="group relative overflow-hidden mt-8"
-  >
-    <div className="relative bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition-all duration-300">
-      <span className="relative z-10 flex items-center justify-center gap-2">
-        <ShoppingCart className="w-4 h-4" />
-        Visit Full Store
-      </span>
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 opacity-0 group-hover:opacity-20 transition-all duration-300" />
-      <div className="absolute top-0 left-0 w-2/5 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-[500%] transition-all duration-1000" />
-    </div>
-    <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg opacity-30 group-hover:opacity-50 blur transition-all duration-300 -z-10" />
-    <div className="absolute -inset-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg opacity-20 group-hover:opacity-40 blur-lg transition-all duration-300 -z-10" />
-  </button>
+                  onClick={handleStoreClick}
+                  className="group relative overflow-hidden mt-8"
+                >
+                  <div className="relative bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition-all duration-300">
+                    <span className="relative z-10 flex items-center justify-center gap-2">
+                      <ShoppingCart className="w-4 h-4" />
+                      Visit Full Store
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 opacity-0 group-hover:opacity-20 transition-all duration-300" />
+                    <div className="absolute top-0 left-0 w-2/5 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-[500%] transition-all duration-1000" />
+                  </div>
+                  <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg opacity-30 group-hover:opacity-50 blur transition-all duration-300 -z-10" />
+                  <div className="absolute -inset-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg opacity-20 group-hover:opacity-40 blur-lg transition-all duration-300 -z-10" />
+                </button>
               </div>
             </div>
           </div>

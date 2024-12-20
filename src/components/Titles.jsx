@@ -160,12 +160,6 @@ const Titles = () => {
                     </div>
                   )}
                 </button>
-                <button 
-                  onClick={scrollToNews}
-                  className="bg-[#232033] text-white px-12 py-4 rounded-lg hover:bg-gray-800 transition-all duration-300 font-bold text-lg transform hover:scale-105"
-                >
-                  LEARN MORE
-                </button>
               </div>
             </div>
           </div>

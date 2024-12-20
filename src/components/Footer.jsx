@@ -1,219 +1,277 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MessageSquare, Instagram, Copy, ChevronsUp, CheckCircle2 } from 'lucide-react';
+import { MessageSquare, Instagram, Copy, ChevronsUp, CheckCircle2, Globe, Shield, Users } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import logo from '../images/bee.png';
 
+const FloatingBubble = ({ delay, duration, size }) => (
+  <div
+    className="absolute rounded-full bg-gradient-to-t from-blue-500/10 via-purple-500/10 to-transparent backdrop-blur-sm"
+    style={{
+      width: size,
+      height: size,
+      bottom: '-20px',
+      left: `${Math.random() * 100}%`,
+      animation: `float ${duration}s ease-in-out infinite`,
+      animationDelay: `${delay}s`,
+    }}
+  />
+);
+
 const Footer = () => {
   const [copied, setCopied] = useState(false);
+  const [showScrollButton, setShowScrollButton] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollButton(window.scrollY > 300);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const copyIP = () => {
-    navigator.clipboard.writeText('play.cubistone.com');
-    setCopied(true);
-    toast.success('Server IP copied!', {
-      icon: '✨',
-      style: {
-        background: '#1f2937',
-        color: '#fff',
-        border: '1px solid #374151'
-      }
-    });
-    setTimeout(() => setCopied(false), 2000);
+  const copyIP = async () => {
+    try {
+      await navigator.clipboard.writeText('play.cubistone.com');
+      setCopied(true);
+      toast.success('Server IP copied!', {
+        icon: '✨',
+        style: {
+          background: '#030712',
+          color: '#fff',
+          borderRadius: '12px',
+          border: '1px solid #1e293b'
+        }
+      });
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy IP:', err);
+    }
   };
 
-  return (
-    <footer className="relative mt-0 bg-gray-950">
-      {/* Smooth Transition Layer */}
-      <div className="absolute inset-x-0 -top-48 h-48 bg-gradient-to-b from-transparent via-gray-950/95 to-gray-950" />
+  // Generate floating bubbles with varying sizes
+  const bubbles = Array.from({ length: 20 }, (_, i) => ({
+    delay: Math.random() * 8,
+    duration: 15 + Math.random() * 25,
+    size: 8 + Math.random() * 24
+  }));
 
-      {/* Wavy Transition */}
-      <div className="absolute inset-x-0 -top-24">
-        <svg className="w-full h-24" viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-          <path 
-            d="M0,0 C320,80 420,0 640,40 C870,80 980,0 1440,60 L1440,100 L0,100 Z" 
-            className="fill-gray-950"
-          />
-          <path 
-            d="M0,20 C320,100 420,20 640,60 C870,100 980,20 1440,80 L1440,100 L0,100 Z" 
-            className="fill-gray-950/50"
-          />
-          <path 
-            d="M0,40 C320,120 420,40 640,80 C870,120 980,40 1440,100 L1440,100 L0,100 Z" 
-            className="fill-gray-950/30"
-          />
-        </svg>
+  return (
+    <footer className="relative mt-0 bg-gray-950 overflow-hidden">
+{/* Enhanced Gradient Background */}
+<div className="absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(8,17,36,0.5),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.08),transparent_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(147,51,234,0.05),transparent_50%)]" />
       </div>
 
-      {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Floating Particles */}
-        <div className="absolute w-full h-full">
-          {[...Array(8)].map((_, i) => (
+      {/* Animated Floating Bubbles */}
+      {bubbles.map((bubble, index) => (
+        <FloatingBubble key={index} {...bubble} />
+      ))}
+
+      {/* Main Content Container */}
+      <div className="relative container mx-auto px-4 lg:px-8 py-40">
+        {/* Brand and CTA Section */}
+        <div className="flex flex-col items-center text-center mb-16 space-y-6">
+          <div className="relative group">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-3xl 
+                         blur-2xl group-hover:blur-3xl transition-all duration-500" />
+            <img src={logo} alt="Logo" className="relative w-24 h-24 object-cover rounded-2xl 
+                                               transform group-hover:scale-105 transition-transform duration-300" />
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              CubiStone Network
+            </h2>
+            <p className="text-gray-400 text-lg">Join the adventure today!</p>
+          </div>
+          <button
+            onClick={copyIP}
+            className="relative group px-8 py-4 rounded-xl overflow-hidden backdrop-blur-sm
+                     bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 
+                     hover:from-blue-500/20 hover:via-purple-500/20 hover:to-pink-500/20
+                     border border-white/[0.05] hover:border-white/[0.1] transition-all duration-300"
+          >
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent 
+                         -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+            <div className="relative flex items-center justify-center gap-3 text-gray-300 group-hover:text-white">
+              {copied ? (
+                <CheckCircle2 className="w-6 h-6 text-green-400" />
+              ) : (
+                <Copy className="w-6 h-6" />
+              )}
+              <span className="font-medium text-lg">play.cubistone.com</span>
+            </div>
+          </button>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+          {[
+            { icon: Globe, label: 'Active Players', value: '1000+' },
+            { icon: Shield, label: 'Server Uptime', value: '99.9%' },
+            { icon: Users, label: 'Community Members', value: '5000+' }
+          ].map((stat, index) => (
             <div
-              key={i}
-              className="absolute rounded-full bg-blue-500/10"
-              style={{
-                width: Math.random() * 100 + 50 + 'px',
-                height: Math.random() * 100 + 50 + 'px',
-                left: Math.random() * 100 + '%',
-                top: Math.random() * 100 + '%',
-              }}
-            />
+              key={index}
+              className="group relative overflow-hidden backdrop-blur-md bg-white/[0.02] p-6 rounded-2xl
+                       border border-white/[0.05] hover:border-white/[0.1] transition-all duration-300"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5 opacity-0 
+                           group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="relative flex items-center gap-4">
+                <div className="p-3 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10 rounded-xl">
+                  <stat.icon className="w-6 h-6 text-white/70" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-400">{stat.label}</p>
+                  <p className="text-2xl font-bold bg-gradient-to-r from-white via-gray-200 to-gray-300 bg-clip-text text-transparent">
+                    {stat.value}
+                  </p>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
 
-        {/* Static Gradient Background */}
-        <div className="absolute bottom-0 left-0 right-0 h-96 bg-gradient-to-t from-black via-gray-950/80 to-transparent" />
-        
-        {/* Static Glows */}
-        <div className="absolute -top-40 left-0 w-96 h-96 bg-blue-500/3 rounded-full blur-3xl" />
-        <div className="absolute -top-40 right-0 w-96 h-96 bg-indigo-500/3 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-1/4 w-[40rem] h-[40rem] bg-blue-500/3 rounded-full blur-3xl" />
-      </div>
-
-      {/* Main Content */}
-      <div className="relative container mx-auto px-6 pt-32 pb-12">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
-          {/* Brand Section */}
-          <div className="col-span-1 md:col-span-5 space-y-8">
-            <div className="flex items-center gap-4 group">
-              <div className="relative w-16 h-16">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-indigo-500/30 rounded-xl blur-[2px] group-hover:blur-[3px] transition-all duration-300"></div>
-                <img src={logo} alt="Logo" className="relative w-full h-full object-cover rounded-xl" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
-                  CubiStone
-                </h3>
-                <p className="text-gray-400">play.cubistone.com</p>
-              </div>
-            </div>
-            
-            <button
-              onClick={copyIP}
-              className="relative group px-6 py-3 w-full md:w-auto bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-xl hover:from-blue-500/20 hover:to-indigo-500/20 transition-all duration-300"
-            >
-              <div className="relative flex items-center justify-center gap-3 text-gray-300 group-hover:text-white">
-                {copied ? (
-                  <CheckCircle2 className="w-4 h-4 text-green-400" />
-                ) : (
-                  <Copy className="w-4 h-4" />
-                )}
-                <span>Copy Server IP</span>
-              </div>
-            </button>
-          </div>
-
+        {/* Links and Social Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
           {/* Quick Links */}
-          <div className="col-span-1 md:col-span-3 space-y-6">
-            <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-              Quick Links
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-white flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-400 to-purple-400"></div>
+              Navigation
             </h3>
-            <ul className="space-y-4">
-              <li>
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { name: 'Home', path: '/' },
+                { name: 'Store', path: '/credits' },
+                { name: 'Support', path: 'https://discord.gg/q376MgFRK7' }
+              ].map((link, index) => (
                 <Link 
-                  to="/" 
-                  className="text-gray-400 hover:text-white hover:translate-x-1 transition-all duration-300 flex items-center gap-2 group"
+                  key={index}
+                  to={link.path}
+                  className="group text-gray-400 hover:text-white flex items-center gap-3 
+                           backdrop-blur-sm bg-white/[0.02] rounded-xl p-4 border border-white/[0.05] 
+                           hover:border-white/[0.1] transition-all duration-300"
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500/50 group-hover:bg-blue-500 transition-colors"></span>
-                  Home
+                  <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-500"></span>
+                  <span className="transform group-hover:translate-x-1 transition-transform">
+                    {link.name}
+                  </span>
                 </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/credits" 
-                  className="text-gray-400 hover:text-white hover:translate-x-1 transition-all duration-300 flex items-center gap-2 group"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500/50 group-hover:bg-blue-500 transition-colors"></span>
-                  Store
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/wiki" 
-                  className="text-gray-400 hover:text-white hover:translate-x-1 transition-all duration-300 flex items-center gap-2 group"
-                >
-                </Link>
-              </li>
-            </ul>
+              ))}
+            </div>
           </div>
 
-          {/* Social Media */}
-          <div className="col-span-1 md:col-span-4 space-y-6">
-            <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-indigo-500"></div>
-              Social Media
+          {/* Social Links */}
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-white flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-400 to-pink-400"></div>
+              Connect With Us
             </h3>
-            <div className="flex gap-4">
-              <a
-                href="https://discord.gg"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative p-3 bg-gray-900/50 rounded-xl border border-gray-800/50 hover:bg-blue-500/20 hover:border-blue-500/50 transition-all duration-300 group"
-              >
-                <MessageSquare className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
-                <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-sm text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                  Discord
-                </span>
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative p-3 bg-gray-900/50 rounded-xl border border-gray-800/50 hover:bg-blue-500/20 hover:border-blue-500/50 transition-all duration-300 group"
-              >
-                <Instagram className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
-                <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-sm text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                  Instagram
-                </span>
-              </a>
-              <a
-                href="https://youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative p-3 bg-gray-900/50 rounded-xl border border-gray-800/50 hover:bg-red-500/20 hover:border-red-500/50 transition-all duration-300 group"
-              >
-                <svg 
-                  className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors"
-                  viewBox="0 0 24 24" 
-                  fill="currentColor"
+            <div className="grid grid-cols-3 gap-4">
+              {[
+                { 
+                  icon: MessageSquare, 
+                  label: 'Discord', 
+                  href: 'https://discord.gg/q376MgFRK7', 
+                  gradient: 'from-blue-400 to-blue-600' 
+                },
+                { 
+                  icon: Instagram, 
+                  label: 'Instagram', 
+                  href: 'https://instagram.com', 
+                  gradient: 'from-purple-400 to-pink-600' 
+                },
+                { 
+                  icon: () => (
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                  ),
+                  label: 'YouTube',
+                  href: 'https://youtube.com',
+                  gradient: 'from-red-400 to-red-600'
+                }
+              ].map((social, index) => (
+                <a
+                  key={index}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative backdrop-blur-md bg-white/[0.02] p-4 rounded-xl
+                           border border-white/[0.05] hover:border-white/[0.1] transition-all duration-300
+                           flex flex-col items-center gap-2"
                 >
-                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                </svg>
-                <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-sm text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                  YouTube
-                </span>
-              </a>
+                  <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 rounded-xl
+                                bg-gradient-to-br ${social.gradient} blur-xl transition-opacity`} />
+                  <div className="relative">
+                    <social.icon className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors" />
+                  </div>
+                  <span className="relative text-sm text-gray-400 group-hover:text-white transition-colors">
+                    {social.label}
+                  </span>
+                </a>
+              ))}
             </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="relative flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-gray-800/50">
+        <div className="relative flex flex-col md:flex-row justify-between items-center gap-4 pt-8
+                     border-t border-white/[0.05]">
           <p className="text-gray-400 text-sm">
             © 2024 CubiStone Network. All rights reserved.
           </p>
           <p className="text-gray-400 text-sm">
-            Developed by <span className="text-blue-400">CUBISTONE TEAM</span>
+            Developed by{' '}
+            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent 
+                         font-medium">
+              CUBISTONE TEAM
+            </span>
           </p>
         </div>
-
-        {/* Scroll to Top Button */}
-        <button
-          onClick={scrollToTop}
-          className="fixed right-8 bottom-8 p-3 bg-gray-900/90 backdrop-blur-sm rounded-xl border border-gray-800/50 hover:bg-gray-800 transition-all duration-300 group"
-        >
-          <ChevronsUp className="w-5 h-5 text-gray-400 group-hover:text-white" />
-        </button>
       </div>
 
-      {/* Static Bottom Border */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
+      {/* Enhanced Scroll to Top Button */}
+      <button
+        onClick={scrollToTop}
+        className={`fixed right-8 bottom-8 p-3 backdrop-blur-md bg-white/[0.02] rounded-xl
+                 border border-white/[0.05] hover:border-white/[0.1] hover:bg-white/[0.05]
+                 transition-all duration-300 group z-50
+                 ${showScrollButton ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0'}`}
+      >
+        <ChevronsUp className="w-5 h-5 text-gray-400 group-hover:text-white 
+                            transform group-hover:-translate-y-1 transition-all" />
+      </button>
+
+      {/* Enhanced Bottom Border */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r 
+                   from-transparent via-purple-500/20 to-transparent" />
+
+      <style jsx>{`
+        @keyframes float {
+          0% {
+            transform: translateY(0) scale(1);
+            opacity: 0;
+          }
+          50% {
+            transform: translateY(-40vh) scale(1.5);
+            opacity: 0.6;
+          }
+          100% {
+            transform: translateY(-80vh) scale(1);
+            opacity: 0;
+          }
+        }
+      `}</style>
     </footer>
   );
 };

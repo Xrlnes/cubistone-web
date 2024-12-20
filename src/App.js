@@ -21,7 +21,6 @@ function App() {
               <>
                 <Hero />
                 <Titles />
-                <News />
                 <CreditShowcase />
               </>
             } />
