@@ -54,7 +54,6 @@ const Footer = () => {
     }
   };
 
-  // Generate floating bubbles with varying sizes
   const bubbles = Array.from({ length: 20 }, (_, i) => ({
     delay: Math.random() * 8,
     duration: 15 + Math.random() * 25,
@@ -62,9 +61,10 @@ const Footer = () => {
   }));
 
   return (
-    <footer className="relative mt-0 bg-gray-950 overflow-hidden">
-{/* Enhanced Gradient Background */}
-<div className="absolute inset-0">
+    <footer className="relative -mt-40 pt-1 bg-gray-950 overflow-hidden">
+      {/* Enhanced Gradient Background */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-transparent to-gray-950" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(8,17,36,0.5),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.08),transparent_70%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(147,51,234,0.05),transparent_50%)]" />
@@ -76,7 +76,7 @@ const Footer = () => {
       ))}
 
       {/* Main Content Container */}
-      <div className="relative container mx-auto px-4 lg:px-8 py-40">
+      <div className="relative container mx-auto px-4 lg:px-8 py-20">
         {/* Brand and CTA Section */}
         <div className="flex flex-col items-center text-center mb-16 space-y-6">
           <div className="relative group">

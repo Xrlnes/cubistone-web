@@ -47,8 +47,9 @@ const StoreShowcase = () => {
   };
 
   return (
-    <section className="bg-gray-950 py-80 relative overflow-hidden">
+    <section className="bg-gray-950 py-60 relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(59,130,246,0.1),transparent_70%)]" />
+      <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-b from-transparent to-gray-950 pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-4 relative">
