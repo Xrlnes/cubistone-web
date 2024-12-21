@@ -43,11 +43,8 @@ const StoreAPI = {
   },
 
   removeFromCart(index) {
-    // Load current cart from localStorage
     this.cart = this.getCart();
-    // Remove item at specified index
     this.cart.splice(index, 1);
-    // Update localStorage
     localStorage.setItem('cart', JSON.stringify(this.cart));
     return {
       success: true,
@@ -66,7 +63,6 @@ const StoreAPI = {
   }
 };
 
-// LoginModal Component
 const LoginModal = ({ isOpen, onClose, onLogin }) => {
   const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(false);
@@ -125,7 +121,6 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
   );
 };
 
-// StoreBar Component
 const StoreBar = ({ username, isLoggedIn, cartItems, onUpdateCart }) => {
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
@@ -152,7 +147,6 @@ const StoreBar = ({ username, isLoggedIn, cartItems, onUpdateCart }) => {
       console.log('Starting checkout process...');
       console.log('Cart items:', cartItems);
 
-      // 1. Create basket without IP (let Tebex handle it)
       const checkoutResponse = await api.post(`/accounts/${WEBSTORE_TOKEN}/baskets`, {
         username: username,
         complete_url: window.location.origin,
@@ -168,7 +162,6 @@ const StoreBar = ({ username, isLoggedIn, cartItems, onUpdateCart }) => {
 
       const basketIdent = checkoutResponse.data.data.ident;
 
-      // 2. Add items to basket
       for (const item of cartItems) {
         console.log('Adding item to basket:', item);
         
@@ -178,11 +171,9 @@ const StoreBar = ({ username, isLoggedIn, cartItems, onUpdateCart }) => {
         });
       }
 
-      // 3. Redirect to Tebex checkout
       const checkoutUrl = `https://checkout.tebex.io/checkout/${basketIdent}`;
       window.open(checkoutUrl, '_blank', 'noopener,noreferrer');
 
-      // Clear cart after successful checkout initiation
       StoreAPI.clearCart();
       onUpdateCart();
 
@@ -207,82 +198,127 @@ const StoreBar = ({ username, isLoggedIn, cartItems, onUpdateCart }) => {
   };
 
   return (
-    <div className="bg-gray-950/50 backdrop-blur-md py-4 mt-20">
+    <div className="bg-gradient-to-b from-gray-900/80 to-gray-950/80 backdrop-blur-xl py-6 mt-20 border-t border-b border-white/5">
       <div className="container mx-auto px-4">
-        <div className="mt-4 bg-gray-900 rounded-xl p-6">
-          <h2 className="text-2xl font-bold text-white mb-4">Your Cart</h2>
+        <div className="relative overflow-hidden">
+          {/* Background Decorative Elements */}
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-blue-500/5 rounded-2xl" />
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
           
-          {cartItems.length === 0 ? (
-            <p className="text-gray-400">Your cart is empty</p>
-          ) : (
-            <>
-              <div className="overflow-y-auto max-h-60">
-                {cartItems.map((item, index) => (
-                  <div 
-                    key={index} 
-                    className="flex justify-between mb-2 text-white items-center"
-                  >
-                    <div className="flex gap-2 items-center">
-                      <span>{item.name}</span>
-                      <span className="text-xs text-gray-400">({item.username})</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span>${item.price}</span>
-                      <button 
-                        onClick={() => handleRemoveFromCart(index)}
-                        className="text-red-500 hover:text-red-600"
-                      >
-                        <svg 
-                          xmlns="http://www.w3.org/2000/svg" 
-                          className="h-5 w-5" 
-                          viewBox="0 0 20 20" 
-                          fill="currentColor"
-                        >
-                          <path 
-                            fillRule="evenodd" 
-                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" 
-                            clipRule="evenodd" 
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                ))}
+          {/* Main Content */}
+          <div className="relative bg-gray-900/40 backdrop-blur-md rounded-2xl p-8 border border-white/10">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <ShoppingCart className="w-6 h-6 text-blue-400" />
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                  Your Cart
+                </h2>
               </div>
+              <div className="text-sm text-gray-400">
+                {username && <span className="px-3 py-1.5 bg-gray-800/50 rounded-full border border-gray-700">
+                  {username}
+                </span>}
+              </div>
+            </div>
 
-              <div className="mt-4 pt-2 border-t border-gray-700">
-                <div className="flex justify-between text-white font-bold">
-                  <span>Total</span>
-                  <span>${calculateTotal()}</span>
+            {/* Cart Content */}
+            {cartItems.length === 0 ? (
+              <div className="text-center py-8">
+                <div className="mb-4">
+                  <ShoppingCart className="w-12 h-12 mx-auto text-gray-600" />
+                </div>
+                <p className="text-gray-400">Your cart is empty</p>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {/* Cart Items */}
+                <div className="space-y-2 max-h-60 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+                  {cartItems.map((item, index) => (
+                    <div 
+                      key={index}
+                      className="group relative flex items-center justify-between p-4 bg-gray-800/50 rounded-xl border border-gray-700/50 hover:border-blue-500/30 transition-all duration-300"
+                    >
+                      <div className="flex gap-3 items-center">
+                        <div className="h-10 w-10 flex items-center justify-center bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-lg">
+                          <Shield className="w-5 h-5 text-blue-400" />
+                        </div>
+                        <div>
+                          <div className="font-medium text-white group-hover:text-blue-400 transition-colors">
+                            {item.name}
+                          </div>
+                          <div className="text-sm text-gray-400">
+                            For: {item.username}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center gap-4">
+                        <span className="font-bold text-white">${item.price}</span>
+                        <button 
+                          onClick={() => handleRemoveFromCart(index)}
+                          className="p-2 text-gray-400 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all"
+                        >
+                          <svg 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            className="h-5 w-5" 
+                            viewBox="0 0 20 20" 
+                            fill="currentColor"
+                          >
+                            <path 
+                              fillRule="evenodd" 
+                              d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" 
+                              clipRule="evenodd" 
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Total and Checkout */}
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center py-4 border-t border-gray-700">
+                    <span className="text-gray-400">Total Amount</span>
+                    <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                      ${calculateTotal()}
+                    </span>
+                  </div>
+
+                  <button 
+                    onClick={handleCheckout}
+                    disabled={isCheckingOut}
+                    className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white py-4 rounded-xl font-bold relative group overflow-hidden disabled:opacity-50 transition-all duration-300"
+                  >
+                    <span className="relative z-10 flex items-center justify-center gap-2">
+                      {isCheckingOut ? (
+                        <>
+                          <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Processing...
+                        </>
+                      ) : (
+                        <>
+                          Proceed to Checkout
+                          <Shield className="w-5 h-5" />
+                        </>
+                      )}
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                  </button>
                 </div>
               </div>
-
-              <button 
-                onClick={handleCheckout}
-                disabled={isCheckingOut}
-                className="w-full mt-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
-              >
-                {isCheckingOut ? (
-                  <>
-                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Processing...
-                  </>
-                ) : (
-                  'Proceed to Checkout'
-                )}
-              </button>
-            </>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-// PackageCard Component
 const getGradient = (packName) => {
   switch(packName.toLowerCase()) {
     case 'starter':
@@ -351,7 +387,6 @@ const PackageCard = ({ pack, onPurchase, loading }) => {
   );
 };
 
-// Main CreditPage Component
 const CreditPage = () => {
   const [packages, setPackages] = useState([]);
   const [scrollProgress, setScrollProgress] = useState(0);
