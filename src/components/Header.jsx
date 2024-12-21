@@ -41,7 +41,6 @@ const Header = () => {
     try {
       await navigator.clipboard.writeText('PLAY.CUBISTONE.COM');
       setShowCopyModal(true);
-      setTimeout(() => setShowCopyModal(false), 3000);
     } catch (err) {
       console.error('Failed to copy text: ', err);
     }
@@ -65,8 +64,7 @@ const Header = () => {
       ${showCopyModal ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
     >
       <div 
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-500" 
-        onClick={() => setShowCopyModal(false)}
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-500"
       />
       <div 
         className={`bg-gray-900/90 border border-white/10 rounded-2xl p-8 relative transform 
@@ -206,7 +204,7 @@ const Header = () => {
       {/* Copy Modal */}
       <CopyModal />
 
-      {/* Animation for shine effect */}
+      {/* Animation Styles */}
       <style jsx>{`
         @keyframes shine {
           100% { transform: translateX(100%) skew(-12deg); }

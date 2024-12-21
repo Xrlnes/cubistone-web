@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MessageSquare, Instagram, Copy, ChevronsUp, CheckCircle2, Globe, Shield, Users } from 'lucide-react';
 import { toast } from 'react-hot-toast';
-import logo from '../images/bee.png';
+import logo from '../images/logo.png';
 
 const FloatingBubble = ({ delay, duration, size }) => (
   <div
@@ -82,7 +82,7 @@ const Footer = () => {
           <div className="relative group">
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-3xl 
                          blur-2xl group-hover:blur-3xl transition-all duration-500" />
-            <img src={logo} alt="Logo" className="relative w-24 h-24 object-cover rounded-2xl 
+            <img src={logo} alt="Logo" className="relative w-48 h-48 object-cover rounded-2xl 
                                                transform group-hover:scale-105 transition-transform duration-300" />
           </div>
           <div className="space-y-2">
