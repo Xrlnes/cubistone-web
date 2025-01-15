@@ -131,8 +131,8 @@ const Header = () => {
 
             {/* Navigation */}
             <nav className="hidden md:flex items-center space-x-12">
-              {['Home', 'About', 'Credits', 'Support', 'Community'].map((item) => (
-                item === 'Credits' ? (
+              {['Home', 'About', 'Store', 'Support', 'Community'].map((item) => (
+                item === 'Store' ? (
                   <Link
                     key={item}
                     to="/credits"
