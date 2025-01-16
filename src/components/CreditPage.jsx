@@ -3,7 +3,7 @@ import { ShoppingCart, Shield } from 'lucide-react';
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080', // Kendi backend sunucunuzun adresi
+  baseURL: 'http://cubistone.com:8080', // Kendi backend sunucunuzun adresi
   headers: {
     'Content-Type': 'application/json'
   }

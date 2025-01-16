@@ -61,7 +61,7 @@ const Footer = () => {
   }));
 
   return (
-    <footer className="relative -mt-40 pt-1 bg-gray-950 overflow-hidden">
+    <footer className="relative -mt-1000 pt-1 bg-gray-950 overflow-hidden">
       {/* Enhanced Gradient Background */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-transparent to-gray-950" />

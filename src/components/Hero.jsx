@@ -14,7 +14,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="relative overflow-hidden bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 py-64">
+    <div className="relative overflow-hidden bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 py-32">
       {/* Background Elements */}
       <div className="absolute inset-0 opacity-20"
         style={{
